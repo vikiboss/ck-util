@@ -49,7 +49,7 @@ export class CookieUtil {
   }
 
   public get(name: string): string | undefined {
-    return this.cookies[name] || undefined
+    return this.cookies[name]
   }
 
   public delete(name: string): string | undefined {

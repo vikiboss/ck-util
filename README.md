@@ -6,7 +6,6 @@
 
 - 💡 简单易用，提供直观的 API
 - 📦 轻量级，零生产依赖
-- 👍 最低支持 ES3，覆盖面广
 - 💻 平台无关，适用于浏览器、Node.js 等环境
 - 🌈 使用 TypeScript 编写，更安全、更健壮
 
@@ -50,3 +49,7 @@ console.log(hasName) // 输出：false
 const cookieStr = cookies.stringify()
 console.log(cookieStr) // 输出："age=21; city=Beijing; country=China"
 ```
+
+## License
+
+- [MIT](LICENSE) License © 2023-PRESENT Viki

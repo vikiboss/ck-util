@@ -2,7 +2,7 @@ export interface Cookies {
   [key: string]: string
 }
 
-export class CookieUtils {
+export class CookieUtil {
   private cookies: Cookies
 
   constructor(cookieStr?: string) {

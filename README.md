@@ -1,15 +1,15 @@
-# 🍪 Cookie Utils 🍪
+# 🍪 Cookie Util 🍪
 
 一个简单、轻量级的、与平台无关的 JavaScript Cookie 工具类，让处理 Cookie 变得更简单！🌟
 
-**为什么是 Cookie Utils？**
+**为什么是 Cookie Util？**
 
 - 💡 简单易用，提供直观的 API
 - 📦 轻量级，零生产依赖
 - 💻 平台无关，适用于浏览器、Node.js 等环境
 - 🌈 使用 TypeScript 编写，更安全、更健壮
 
-来试试 Cookie Utils，让 Cookie 操作轻松愉快，睡个安稳觉！🥳
+来试试 Cookie Util，让 Cookie 操作轻松愉快，睡个安稳觉！🥳
 
 ## 🚀 安装
 
@@ -22,8 +22,11 @@ npm install ck-util
 ## 🎉 使用
 
 ```javascript
+// 🧭 从 ck-util 中引入 CookieUtil 类
+const { CookieUtil } = require('ck-util')
+
 // 🔍 解析 Cookie 字符串
-const cookies = new CookieUtils('name=Viki%20Moe; age=21; city=Beijing')
+const cookies = new CookieUtil('name=Viki%20Moe; age=21; city=Beijing')
 console.log(cookies.get('name')) // 输出：'Viki Moe'
 
 // ✏️ 设置 Cookie 字段

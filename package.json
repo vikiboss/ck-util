@@ -14,7 +14,9 @@
   ],
   "scripts": {
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "prerelease": "rm -rf index.{js,d.ts} & npm run build",
+    "release": "npm publish"
   },
   "keywords": [
     "cookie",

@@ -1,6 +1,6 @@
 {
   "name": "ck-util",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "一个简单、轻量级、与平台无关的 JavaScript Cookie 工具库，让你在不同环境中处理 Cookie 变得更简单！🌟",
   "main": "./index.js",
   "module": "./index.js",

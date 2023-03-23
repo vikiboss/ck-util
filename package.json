@@ -1,14 +1,17 @@
 {
   "name": "ck-util",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "一个简单、轻量级、与平台无关的 JavaScript Cookie 工具库，让你在不同环境中处理 Cookie 变得更简单！🌟",
-  "main": "index.js",
+  "main": "./index.js",
+  "module": "./index.js",
   "types": "./index.d.ts",
   "repository": "github:vikiboss/ck-util",
   "homepage": "https://github.com/vikiboss/ck-util",
-  "exports": {
-    ".": "./index.js"
-  },
+  "bugs": "https://github.com/vikiboss/ck-util/issues",
+  "files": [
+    "index.js",
+    "index.d.ts"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "jest"
@@ -25,5 +28,9 @@
     "jest": "^29.5.0",
     "ts-jest": "^29.0.5",
     "typescript": "^5.0.2"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   }
 }

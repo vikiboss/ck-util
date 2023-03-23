@@ -2,13 +2,13 @@ import { CookieUtils } from '.'
 
 describe('CookieUtils', () => {
   it('should parse cookies correctly', () => {
-    const cookieStr = 'name=John%20Doe; age=25; city=New%20York; empty='
+    const cookieStr = 'name=John%20Moe; age=25; city=New%20York; empty='
     const cookies = new CookieUtils(cookieStr)
 
-    expect(cookies.get('name')).toBe('John Doe')
+    expect(cookies.get('name')).toBe('John Moe')
     expect(cookies.get('age')).toBe('25')
     expect(cookies.get('city')).toBe('New York')
-    expect(cookies.get('empty')).toBeNull()
+    expect(cookies.get('empty')).toBeUndefined()
   })
 
   it('should handle empty constructor', () => {
@@ -25,27 +25,31 @@ describe('CookieUtils', () => {
 
   it('should set and stringify cookies correctly', () => {
     const cookies = new CookieUtils()
-    cookies.set('name', 'John Doe')
+    cookies.set('name', 'John Moe')
     cookies.set('age', '25')
     cookies.set('city', 'New York')
 
     const cookieStr = cookies.stringify()
-    expect(cookieStr).toContain('name=John%20Doe')
+    expect(cookieStr).toContain('name=John%20Moe')
     expect(cookieStr).toContain('age=25')
     expect(cookieStr).toContain('city=New%20York')
   })
 
-  it('should delete cookies correctly', () => {
-    const cookieStr = 'name=John%20Doe; age=25; city=New%20York'
-    const cookies = new CookieUtils(cookieStr)
-    cookies.delete('age')
+  it('should delete a cookie and return the deleted value', () => {
+    const cookies = new CookieUtils('name=John%20Moe; age=25; city=New%20York')
+    const deletedValue = cookies.delete('name')
+    expect(deletedValue).toBe('John Moe')
+    expect(cookies.get('name')).toBeUndefined()
+  })
 
-    expect(cookies.get('age')).toBe(null)
-    expect(cookies.stringify()).not.toContain('age=25')
+  it('should return undefined when deleting a non-existing cookie', () => {
+    const cookies = new CookieUtils('name=John%20Moe; age=25; city=New%20York')
+    const deletedValue = cookies.delete('nonExisting')
+    expect(deletedValue).toBeUndefined()
   })
 
   it('should check if a cookie exists correctly', () => {
-    const cookieStr = 'name=John%20Doe; age=25; city=New%20York'
+    const cookieStr = 'name=John%20Moe; age=25; city=New%20York'
     const cookies = new CookieUtils(cookieStr)
 
     expect(cookies.has('name')).toBeTruthy()
@@ -53,7 +57,7 @@ describe('CookieUtils', () => {
   })
 
   it('should not include empty cookies in the output', () => {
-    const cookieStr = 'name=John%20Doe; age=25;;; city=New%20York;;;;'
+    const cookieStr = 'name=John%20Moe; age=25;;; city=New%20York;;;;'
     const cookies = new CookieUtils(cookieStr)
 
     expect(cookies.stringify()).not.toContain(';;')
@@ -68,45 +72,45 @@ describe('CookieUtils', () => {
   })
 
   it('should handle cookies with spaces in the name', () => {
-    const cookieStr = 'name with spaces=John%20Doe'
+    const cookieStr = 'name with spaces=John%20Moe'
     const cookies = new CookieUtils(cookieStr)
 
-    expect(cookies.get('name with spaces')).toBe('John Doe')
+    expect(cookies.get('name with spaces')).toBe('John Moe')
   })
 
   it('should handle cookies with special characters in the name', () => {
-    const cookieStr = 'na!me$%^with&*()special=John%20Doe'
+    const cookieStr = 'na!me$%^with&*()special=John%20Moe'
     const cookies = new CookieUtils(cookieStr)
 
-    expect(cookies.get('na!me$%^with&*()special')).toBe('John Doe')
+    expect(cookies.get('na!me$%^with&*()special')).toBe('John Moe')
   })
 
   it('should handle cookies with special characters in the value', () => {
-    const cookieStr = 'name=John%20Doe%21%40%23%24%25%5E%26*%28%29_%2B%7C%60%7E'
+    const cookieStr = 'name=John%20Moe%21%40%23%24%25%5E%26*%28%29_%2B%7C%60%7E'
     const cookies = new CookieUtils(cookieStr)
 
-    expect(cookies.get('name')).toBe('John Doe!@#$%^&*()_+|`~')
+    expect(cookies.get('name')).toBe('John Moe!@#$%^&*()_+|`~')
   })
 
   it('should ignore cookies with no name', () => {
-    const cookieStr = '=John%20Doe; age=25'
+    const cookieStr = '=John%20Moe; age=25'
     const cookies = new CookieUtils(cookieStr)
 
     expect(cookies.stringify()).toBe('age=25')
   })
 
   it('should handle cookies with only spaces as the name', () => {
-    const cookieStr = '   =John%20Doe; age=25'
+    const cookieStr = '   =John%20Moe; age=25'
     const cookies = new CookieUtils(cookieStr)
 
     expect(cookies.stringify()).toBe('age=25')
   })
 
   it('should handle cookies with only special characters as the name', () => {
-    const cookieStr = '!@#$%^&*()_+=John%20Doe; age=25'
+    const cookieStr = '!@#$%^&*()_+=John%20Moe; age=25'
     const cookies = new CookieUtils(cookieStr)
 
-    expect(cookies.stringify()).toBe('!@#$%^&*()_+=John%20Doe; age=25')
+    expect(cookies.stringify()).toBe('!@#$%^&*()_+=John%20Moe; age=25')
   })
 
   it('should handle very long cookie strings', () => {
@@ -114,5 +118,57 @@ describe('CookieUtils', () => {
     const cookies = new CookieUtils(cookieStr)
 
     expect(cookies.get('a'.repeat(1000))).toBe('b='.repeat(1000).slice(0, -1))
+  })
+
+  it('should return an empty object for an empty string', () => {
+    const cookies = new CookieUtils('')
+    expect(cookies).toBeDefined()
+    expect(cookies.stringify()).toBe('')
+    expect(cookies.get('anything')).toBeUndefined()
+    expect(cookies.has('anything')).toBeFalsy()
+  })
+
+  it('should throw an error for a malformed cookie string', () => {
+    expect(() => {
+      new CookieUtils('not a cookie')
+    }).toThrow('Malformed cookie: not a cookie')
+  })
+
+  it('should parse a single cookie', () => {
+    const cookies = new CookieUtils('name=John%20Doe')
+    expect(cookies).toBeDefined()
+    expect(cookies.stringify()).toBe('name=John%20Doe')
+    expect(cookies.get('name')).toBe('John Doe')
+    expect(cookies.has('name')).toBeTruthy()
+  })
+
+  it('should parse multiple cookies', () => {
+    const cookies = new CookieUtils('name=John%20Doe; age=25; city=New%20York')
+    expect(cookies).toBeDefined()
+    expect(cookies.stringify()).toBe('name=John%20Doe; age=25; city=New%20York')
+    expect(cookies.get('name')).toBe('John Doe')
+    expect(cookies.get('age')).toBe('25')
+    expect(cookies.get('city')).toBe('New York')
+    expect(cookies.has('name')).toBeTruthy()
+    expect(cookies.has('age')).toBeTruthy()
+    expect(cookies.has('city')).toBeTruthy()
+  })
+
+  it('should set a cookie', () => {
+    const cookies = new CookieUtils('name=John%20Doe')
+    expect(cookies).toBeDefined()
+    cookies.set('age', '25')
+    expect(cookies.stringify()).toBe('name=John%20Doe; age=25')
+    expect(cookies.get('age')).toBe('25')
+    expect(cookies.has('age')).toBeTruthy()
+  })
+
+  it('should delete a cookie', () => {
+    const cookies = new CookieUtils('name=John%20Doe; age=25; city=New%20York')
+    expect(cookies).toBeDefined()
+    cookies.delete('age')
+    expect(cookies.stringify()).toBe('name=John%20Doe; city=New%20York')
+    expect(cookies.get('age')).toBeUndefined()
+    expect(cookies.has('age')).toBeFalsy()
   })
 })

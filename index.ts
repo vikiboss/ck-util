@@ -12,15 +12,21 @@ export class CookieUtils {
   private parse(str: string): Cookies {
     const cookies: Cookies = {}
 
-    if (!str) {
+    if (!str.trim()) {
       return cookies
     }
 
+    const hasEqual = str.indexOf('=') !== -1
     const cookieArr = str.split(/;+/)
+
+    if (!hasEqual) {
+      throw new Error(`Malformed cookie: ${str}`)
+    }
 
     for (const cookie of cookieArr) {
       const [cookieName, ...cookieValueParts] = cookie.split('=').map(s => s.trim())
       const cookieValue = cookieValueParts.join('=')
+
       if (cookieName) {
         cookies[cookieName] = decodeURIComponent(cookieValue)
       }
@@ -42,13 +48,14 @@ export class CookieUtils {
     }
   }
 
-  public get(name: string): string | null {
-    return this.cookies[name] || null
+  public get(name: string): string | undefined {
+    return this.cookies[name] || undefined
   }
 
-  public delete(name: string): void {
-    const { [name]: _, ...remainingCookies } = this.cookies
+  public delete(name: string): string | undefined {
+    const { [name]: deletedValue, ...remainingCookies } = this.cookies
     this.cookies = remainingCookies
+    return deletedValue
   }
 
   public has(name: string): boolean {

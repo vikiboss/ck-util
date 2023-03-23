@@ -1,8 +1,14 @@
 {
   "name": "ck-util",
   "version": "0.0.1",
-  "description": "一个简单、轻量级的、与平台无关的 JavaScript Cookie 工具库，让你在不同环境中处理 Cookie 变得更简单！🌟",
+  "description": "一个简单、轻量级、与平台无关的 JavaScript Cookie 工具库，让你在不同环境中处理 Cookie 变得更简单！🌟",
   "main": "index.js",
+  "types": "./index.d.ts",
+  "repository": "github:vikiboss/ck-util",
+  "homepage": "https://github.com/vikiboss/ck-util",
+  "exports": {
+    ".": "./index.js"
+  },
   "scripts": {
     "build": "tsc",
     "test": "jest"
